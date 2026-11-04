@@ -6,12 +6,43 @@ import qs.config
 Rectangle {
     id: root
 
-    radius: Config.metrics.radiusMedium
+    radius: Config.metrics.radius[350]
     color: Config.theme.backgroundPrimary
     border.color: Config.theme.borderSubtle
     border.width: Config.metrics.borderThin
 
+    transformOrigin: Item.Top
+
+    HoverHandler {
+        id: hoverHandler
+    }
+
+    // Composable hover scale
+    scale: hoverHandler.hovered ? 1.04 : 1.0
+
+    Behavior on scale {
+        NumberAnimation {
+            duration: 300
+            easing.type: Easing.OutBack
+            easing.overshoot: 2
+        }
+    }
+
+    // Bind width to stage implicit width
+    width: notchStage.implicitWidth
+
+    // Dynamic height responding to module needs
+    height: notchStage.implicitHeight
+    Behavior on height {
+        NumberAnimation {
+            duration: 400
+            easing.type: Easing.OutBack
+            easing.overshoot: 1.2
+        }
+    }
+
     NotchStage {
+        id: notchStage
         anchors {
             fill: parent
             margins: Config.notch.padding
