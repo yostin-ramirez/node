@@ -7,40 +7,62 @@ Item {
     id: root
 
     // Default config
-    property string thumbnail: ""
-    property int size: Config.metrics.iconMedium
-    property int radius: 6
+    property string thumbnailUrl: ""
+    property bool isPreviewActive: false
+    property int baseSize: Config.metrics.iconMedium
+    property int expansionSize: 4
+    property int radius: Config.metrics.radius[200] // TODO: link with radius property of clipping wrapper
 
-    width: size
-    height: size
+    readonly property bool isHovered: hoverHandler.hovered
+
+    // Target sizes for crisp rendering
+    readonly property int _maxSize: baseSize + expansionSize
+
+    width: (isPreviewActive || isHovered) ? _maxSize : baseSize
+    height: (isPreviewActive || isHovered) ? _maxSize : baseSize
 
     property string _activeUrl: ""
     property string _pendingUrl: ""
     property bool _isInitialized: false
 
-    onThumbnailChanged: {
+    HoverHandler {
+        id: hoverHandler
+    }
+
+    Behavior on width {
+        NumberAnimation {
+            duration: 500
+            easing.type: Easing.OutBack
+            easing.overshoot: 4.6
+        }
+    }
+    Behavior on height {
+        NumberAnimation {
+            duration: 500
+            easing.type: Easing.OutBack
+            easing.overshoot: 4.6
+        }
+    }
+
+    onThumbnailUrlChanged: {
         if (!_isInitialized) {
-            _activeUrl = thumbnail;
+            _activeUrl = thumbnailUrl;
             _isInitialized = true;
             return;
         }
-        if (thumbnail === _activeUrl)
+        if (thumbnailUrl === _activeUrl)
             return;
-        _pendingUrl = thumbnail;
+        _pendingUrl = thumbnailUrl;
     }
 
-    // Preloader
     Image {
         id: imgPreload
-        width: 1
-        height: 1
         visible: false
         source: root._pendingUrl
-        sourceSize.width: root.size
-        sourceSize.height: root.size
+        sourceSize.width: root._maxSize
+        sourceSize.height: root._maxSize
         asynchronous: true
         cache: true
-
         onStatusChanged: {
             if (status === Image.Ready && root._pendingUrl !== "" && !transitionAnimation.running) {
                 transitionAnimation.restart();
@@ -51,16 +73,16 @@ Item {
     ClippingWrapperRectangle {
         id: wrapper
         anchors.fill: parent
-        radius: root.radius
-        color: "#1E1E1E"
+        radius: Config.metrics.radius[200]
+        color: Config.theme.backgroundSecondary
         layer.enabled: true
         visible: false
 
         Image {
             anchors.fill: parent
             source: root._activeUrl
-            sourceSize.width: root.size
-            sourceSize.height: root.size
+            sourceSize.width: root._maxSize
+            sourceSize.height: root._maxSize
             fillMode: Image.PreserveAspectCrop
             asynchronous: true
             cache: true
@@ -79,17 +101,18 @@ Item {
         brightness: 0.0
     }
 
-    transform: Scale {
-        id: flipScale
-        origin.x: root.width / 2
-        origin.y: root.height / 2
-        xScale: 1.0
-    }
+    transform: [
+        Scale {
+            id: flipScale
+            origin.x: root.width / 2
+            origin.y: root.height / 2
+            xScale: 1.0
+        }
+    ]
 
     SequentialAnimation {
         id: transitionAnimation
 
-        // PHASE 1: Squeeze to center and blur
         ParallelAnimation {
             NumberAnimation {
                 target: flipScale
@@ -114,14 +137,12 @@ Item {
             }
         }
 
-        // PHASE 2: Invisible swap
         PropertyAction {
             target: root
             property: "_activeUrl"
             value: root._pendingUrl
         }
 
-        // PHASE 3: Normalize
         ParallelAnimation {
             NumberAnimation {
                 target: flipScale
@@ -135,7 +156,7 @@ Item {
                 target: blurEffect
                 property: "blur"
                 to: 0.0
-                duration: 500
+                duration: 600
                 easing.type: Easing.OutQuad
             }
             NumberAnimation {
