@@ -45,7 +45,7 @@ RowLayout {
         rightPadding: 6
 
         Text {
-            text: "Wed"
+            text: DateService.dayShort
             font.pixelSize: Config.theme.fontSizePrimary
             font.family: "BDO Grotesk"
             font.weight: Font.DemiBold
@@ -53,7 +53,7 @@ RowLayout {
         }
 
         Text {
-            text: "15"
+            text: DateService.dayNumber
             font.pixelSize: Config.theme.fontSizePrimary
             font.family: "BDO Grotesk"
             font.weight: Font.DemiBold
