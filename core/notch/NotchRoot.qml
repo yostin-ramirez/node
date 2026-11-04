@@ -9,9 +9,9 @@ PanelWindow {
 
     anchors.top: true
 
-    // Temporary -> depends on the notch state
-    implicitWidth: Config.notch.width
-    implicitHeight: Config.notch.height
+    // Max notch width
+    implicitWidth: 500
+    implicitHeight: 500
 
     exclusiveZone: -1
     color: "transparent"
@@ -21,7 +21,13 @@ PanelWindow {
 
     WlrLayershell.namespace: "notch"
 
+    mask: Region {
+        item: background
+    }
+
     NotchBackground {
-        anchors.fill: parent
+        id: background
+        anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
     }
 }
