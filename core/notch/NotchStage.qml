@@ -7,6 +7,9 @@ import qs.modules
 Item {
     id: root
 
+    implicitHeight: currentLoader.item ? currentLoader.item.implicitHeight : Config.notch.height
+    implicitWidth: currentLoader.item ? currentLoader.item.implicitWidth : Config.notch.width
+
     // Exposed to NotchBackground for bottom-edge content (e.g. progress bar)
     property alias bottomSlot: bottomSlotContainer
 
