@@ -20,6 +20,7 @@ QtObject {
             200: baseUnit * 2,
             250: baseUnit * 2.5,
             300: baseUnit * 3,
+            350: baseUnit * 3.5,
             400: baseUnit * 4,
             500: baseUnit * 5,
             600: baseUnit * 6
@@ -30,7 +31,8 @@ QtObject {
             400: baseUnit * 4,
             600: baseUnit * 6,
             650: baseUnit * 6.5,
-            1200: baseUnit * 12
+            1200: baseUnit * 12,
+            1600: baseUnit * 16
         })
 
     // Radius scale

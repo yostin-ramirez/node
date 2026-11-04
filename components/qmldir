@@ -2,5 +2,7 @@ module qs.components
 AudioVisualizer 1.0 AudioVisualizer.qml
 CascadeText 1.0 CascadeText.qml
 CascadeChar 1.0 CascadeChar.qml
+MarqueeText 1.0 MarqueeText.qml
+MediaMetadata 1.0 MediaMetadata.qml
 MediaThumbnail 1.0 MediaThumbnail.qml
 ProgressBar 1.0 ProgressBar.qml

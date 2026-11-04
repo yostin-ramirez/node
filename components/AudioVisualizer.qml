@@ -19,15 +19,15 @@ Item {
 
     anchors {
         leftMargin: 2
-        rightMargin: 2
+        rightMargin: 4
     }
 
     // Set bars to service
     Component.onCompleted: {
-            if (service) {
-                service.setupBars(root.barCount);
-            }
+        if (service) {
+            service.setupBars(root.barCount);
         }
+    }
 
     Row {
         anchors.centerIn: parent

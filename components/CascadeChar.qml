@@ -77,7 +77,7 @@ Item {
         anchors.fill: fadingText
         visible: opacity > 0
         blurEnabled: blur > 0
-        blurMax: 12
+        blurMax: 16
         blur: 0.0
         opacity: 0.0
     }
