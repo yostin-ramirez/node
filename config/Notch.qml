@@ -23,25 +23,24 @@ QtObject {
 
         // Bubble travel, overshoot makes it bounce away from the notch
         readonly property int detachDuration: 600
-        readonly property real bubbleOvershoot: 0.6
+        readonly property real bubbleOvershoot: 0.5
 
         // Progress where the bubble stops being part of the notch
-        readonly property real separateStart: 0.2
+        readonly property real separateStart: 0.1
 
         // Content reveal, ends together with the bubble resize
-        readonly property int contentDuration: 700
+        readonly property int contentDuration: 600
         readonly property real contentOffset: 10
         readonly property int contentBlurMax: 24
 
         // Delay so the module mounts and renders before the motion starts
-        readonly property int mountDelay: 80
+        readonly property int mountDelay: 10
 
         // Extra vertical bounce: bubble goes past its final spot then returns
-        readonly property real dropDistance: 3
+        readonly property real dropDistance: 2
         // Fraction of detachDuration where the drop starts
-        readonly property real dropStart: 0.3
-        readonly property int dropOutDuration: 150
-        readonly property int dropBackDuration: 350
-
+        readonly property real dropStart: 0.4
+        readonly property int dropOutDuration: 80
+        readonly property int dropBackDuration: 250
     }
 }
