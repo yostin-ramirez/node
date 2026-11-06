@@ -18,6 +18,7 @@ QtObject {
             100: baseUnit,
             150: baseUnit * 1.5,
             200: baseUnit * 2,
+            225: baseUnit * 2.25,
             250: baseUnit * 2.5,
             300: baseUnit * 3,
             350: baseUnit * 3.5,
