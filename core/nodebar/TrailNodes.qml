@@ -21,11 +21,12 @@ RowLayout {
         color: "white"
     }
 
-    Text {
-        text: "􀝗"
-        font.pixelSize: 14
-        font.family: "SF Pro"
-        color: "white"
+    // Notifications toggle, off means do not disturb
+    IconToggle {
+        checked: !NotificationService.doNotDisturb
+        activeIcon: "􀝗"
+        inactiveIcon: "􀋞"
+        onToggled: NotificationService.doNotDisturb = !NotificationService.doNotDisturb
     }
 
     Text {

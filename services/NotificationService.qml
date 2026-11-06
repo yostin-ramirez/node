@@ -17,6 +17,19 @@ Singleton {
         })
     property bool isActive: false
 
+    // Do not disturb: new notifications are ignored and the visible one is closed
+    property bool doNotDisturb: false
+
+    onDoNotDisturbChanged: {
+        if (!doNotDisturb || !_shown)
+            return;
+
+        // Drop the waiting entry so nothing replaces the one being closed
+        _release(_pending, null, false);
+        _pending = null;
+        _advance(false);
+    }
+
     // Time limits in milliseconds
     readonly property int _defaultDuration: 5000
     readonly property int _minDuration: 3000
@@ -37,6 +50,11 @@ Singleton {
     }
 
     function _receive(notification) {
+
+        // Untracked notifications are discarded by the server
+        if (doNotDisturb)
+            return;
+
         // Tracking keeps the object alive until it is closed
         notification.tracked = true;
         notification.closed.connect(() => root._detach(notification));
