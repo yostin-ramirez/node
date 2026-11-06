@@ -6,6 +6,9 @@ import qs.config
 Rectangle {
     id: root
 
+    // Driven by NotchBubble while it morphs out of the notch
+    property real morphStretch: 0.0
+
     radius: Config.metrics.radius[350]
     color: Config.theme.backgroundPrimary
     border.color: Config.theme.borderSubtle
@@ -28,12 +31,13 @@ Rectangle {
         }
     }
 
-    // Bind width to stage implicit width
-    width: notchStage.implicitWidth
+    // Bind width to stage implicit width plus the morph stretch
+    width: notchStage.implicitWidth + morphStretch * Config.notch.morph.stretchWidth
 
-    // Dynamic height responding to module needs
-    height: notchStage.implicitHeight
+    // Dynamic height responding to module needs plus the morph stretch
+    height: notchStage.implicitHeight + morphStretch * Config.notch.morph.stretchHeight
     Behavior on height {
+        enabled: root.morphStretch === 0
         NumberAnimation {
             duration: 400
             easing.type: Easing.OutBack

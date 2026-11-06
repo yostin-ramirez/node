@@ -23,11 +23,22 @@ PanelWindow {
 
     mask: Region {
         item: background
+
+        Region {
+            item: bubble.visible ? bubble : null
+        }
     }
 
     NotchBackground {
         id: background
+        z: 1
+        morphStretch: bubble.stretch
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    NotchBubble {
+        id: bubble
+        origin: background
     }
 }

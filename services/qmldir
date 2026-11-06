@@ -3,4 +3,5 @@ singleton AudioService 1.0 AudioService.qml
 singleton ClockService 1.0 ClockService.qml
 singleton DateService 1.0 DateService.qml
 singleton MediaService 1.0 MediaService.qml
+singleton NotificationService 1.0 NotificationService.qml
 singleton NotchState 1.0 NotchState.qml

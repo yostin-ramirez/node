@@ -16,9 +16,9 @@ Item {
     // Module registry: maps scene name -> component factory
     // To add a new module: register it here and create its Module file
     readonly property var _registry: ({
-            "media": mediaComponent,
-            "none": null
-        })
+        "media": mediaComponent,
+        "none": null
+    })
 
     Component {
         id: mediaComponent

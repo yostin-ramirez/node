@@ -1,2 +1,3 @@
 module qs.modules
 MediaModule 1.0 MediaModule.qml
+NotificationModule 1.0 NotificationModule.qml

@@ -11,7 +11,8 @@ Singleton {
     // Scene identifiers — matched against NotchStage's module registry
     readonly property var scene: ({
             None: "none",
-            Media: "media"
+            Media: "media",
+            Notification: "notification"
             // Future: Notification, Call, Timer, etc.
         })
 
@@ -26,13 +27,23 @@ Singleton {
         // Scene.Call,
         // Scene.Notification,
         // Scene.Timer,
-        scene.Media]
+        scene.Media
+    ]
+
+    readonly property var _bubblePriority: [scene.Notification]
 
     // Active state per scene — add one entry per future scene type
-    readonly property var _active: ({
-            "media": Qt.binding(() => MediaService.isPlaying)
-            // "timer": Qt.binding(() => TimerService.isRunning)
-        })
+    function _isActive(candidate) {
+        switch (candidate) {
+        case scene.Notification:
+            return NotificationService.isActive;
+        case scene.Media:
+            // Default scene, same effective behavior as before
+            return true;
+        default:
+            return false;
+        }
+    }
 
     Connections {
         target: MediaService
@@ -41,18 +52,25 @@ Singleton {
         }
     }
 
+    Connections {
+        target: NotificationService
+        function onIsActiveChanged() {
+            root._resolve();
+        }
+    }
+
     Component.onCompleted: _resolve()
 
-    function _resolve() {
-        for (let i = 0; i < _priority.length; i++) {
-            const scene = _priority[i];
-            if (root._active[scene]) {
-                if (root.primaryScene !== scene)
-                    root.primaryScene = scene;
-                return;
-            }
+    function _pick(candidates) {
+        for (let i = 0; i < candidates.length; i++) {
+            if (root._isActive(candidates[i]))
+                return candidates[i];
         }
-        if (root.primaryScene !== scene.None)
-            root.primaryScene = scene.None;
+        return scene.None;
+    }
+
+    function _resolve() {
+        primaryScene = _pick(_priority);
+        bubbleScene = _pick(_bubblePriority);
     }
 }
